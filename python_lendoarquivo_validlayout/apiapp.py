@@ -5,29 +5,6 @@ import time
 app = Flask(__name__)
 
 r = redis.Redis(host='localhost', port='6379')
-##
-# COMENTARIOS ABAIXO SÃO APENAS PARA CONHECIMENTO
-# devs = [
-#     {
-#         'name': 'Airton Lira',
-#         'lang': 'python'
-#     },
-#     {
-#         'name': 'John doe',
-#         'lang': 'NodeJs'
-#     }
-# ]
-
-# @app.route('/devs', methods=['GET'])
-# def home():
-#     return jsonify(devs), 200
-#
-#
-# @app.route('/devs/<string:linguagem>', methods=['GET'])
-# def devs_por_linguagem(linguagem):
-#     devs_por_linguagem = [dev for dev in devs if dev['lang'] == linguagem]
-#     return jsonify(devs_por_linguagem), 200
-##
 
 
 @app.route('/readarchive', methods=['POST'])
