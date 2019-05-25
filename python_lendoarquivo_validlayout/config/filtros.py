@@ -1,41 +1,47 @@
 import redis
 import pyodbc
 
+
 def duplicidade(linhas):
-    result = list(set(linhas)) #Cria um conjunto e depois transforma em lista, conjunto não pode ter dados repetidos, logo o mesmo retira a duplicidade.
+    # Cria um conjunto e depois transforma em lista, conjunto não pode ter dados repetidos,
+    # logo o mesmo retira a duplicidade.
+    result = list(set(linhas))
 
     return result
 
 
-
 def filtros(linha):
-    filtros = {} #Dicionario com os filtros para cada linha
-    result  = [] #Resultado com a chave do filtro que retornou falso
+    # Dicionario com os filtros para cada linha
+    regras = {}
+    # Resultado com a chave do filtro que retornou falso
+    result = []
 
-    tratativas = {} #Dicionario com tratativa de linhas para importação
-    registro = [] #Lista com os registros a serem inseridos na base
+    # Dicionario com tratativa de linhas para importação
+    tratativas = {}
+    # Lista com os registros a serem inseridos na base
+    registro = []
 
     insbd = []
 
-
     """Filtros que serão aplicados linhha a linha"""
-    filtros.update({"NM000":lambda linha: len(linha[0:9].strip(" ")) == 9})
-    filtros.update({"NAME":lambda linha: len(linha[13:20].strip(" ")) >= 1})
+    regras.update({"NM000": lambda line: len(linha[0:9].strip(" ")) == 9})
+    regras.update({"NAME": lambda line: len(linha[13:20].strip(" ")) >= 1})
 
     """Tratativas das linhas para importação"""
-    tratativas.update({"NM000":lambda linha: linha[0:9].strip(" ")})
-    tratativas.update({"NAME":lambda linha: linha[13:26].strip(" ")})
+    tratativas.update({"NM000": lambda line: linha[0:9].strip(" ")})
+    tratativas.update({"NAME": lambda line: linha[13:26].strip(" ")})
 
-    for retira in filtros.items():
-        teste = filtros[retira[0]]
-        if not teste(linha): #Caso o filtro não seja verdadeiro, layout invalido.
-            result.append(retira[0])
+    for retira in regras.items():
+        teste = regras[retira[0]]
+        if not teste(linha):
+            result.append("Erro de layout"+retira[0]+" para o conteudo:"+linha)
         else:
             funcfiltro = tratativas[retira[0]]
             retstring = funcfiltro(linha)
             registro.append(retstring)
 
-    if len(registro) == 2: #Somente inseri no banco se todos os filtros foram verdadeiros
+    # Somente inseri no banco se todos os filtros foram verdadeiros
+    if len(registro) == 2:
         stringinsert = 'INSERT INTO ESTAGETABLE VALUES '+str(tuple(registro))
         insbd.append(stringinsert)
 
