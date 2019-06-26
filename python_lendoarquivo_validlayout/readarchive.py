@@ -46,7 +46,7 @@ def inicia(caminho, caminholog):
                 print(f"Tempo total para obter as {linhas} linhas de um total de {count} "
                       f"linhas: {time.time() - iniciotm}  ")
 
-                r.set('situacao', 'Iniciando retirada de duplicidade... Linhas atuais:' + str(count))
+                r.set('situacao', 'Iniciando retirada de duplicidade... Linhas atuais:{}'.format(str(count)))
 
                 # Retira duplicidade do arquivo caso exista
                 iniciotm = time.time()
@@ -54,9 +54,9 @@ def inicia(caminho, caminholog):
 
                 print(f"Tempo total para retirar duplicidades das {linhas} linhas de um total de {count} "
                       f"linhas: {time.time() - iniciotm}  ")
-                r.set('situacao', 'Tratativa de duplicidade executada! Linhas atuais:' + str(count))
+                r.set('situacao', 'Tratativa de duplicidade executada! Linhas atuais:{}'.format(str(count)))
 
-                r.set('situacao', 'aplicando regras de layout Linhas atuais:' + str(count))
+                r.set('situacao', 'aplicando regras de layout Linhas atuais: {}'.format(str(count)))
                 iniciotm = time.time()
                 result = list(map(filtros.filtros, texto))
 
@@ -82,7 +82,7 @@ def inicia(caminho, caminholog):
     arqlog.close()
     print(f"Tempo de processamento: {fim - inicio}")
 
-    return "Processado com sucesso, tempo total: " + str(fim - inicio)
+    return "Processado com sucesso, tempo total: {}".format(str(fim - inicio))
 
 
 # Função para tratamento de inserção dos dados no banco de dados
@@ -95,7 +95,7 @@ def insertbd(lista):
         try:
             stringinsert = code[0] if len(code[0]) > 0 else ""
         except:
-            stringinsert = " Erro trativa de if linha 71 sobre a lista: " + str(code)
+            stringinsert = " Erro trativa de if linha 71 sobre a lista: {}".format(str(code))
         retorno = ""
 
         conn_str = 'DRIVER={SQL Server};SERVER=DESKTOP-32JQ24J\\SQLEXPRESS;DATABASE=Estudo;Integrated Security=true'
@@ -107,7 +107,7 @@ def insertbd(lista):
                 cursor.execute(stringinsert)
 
             except pyodbc.ProgrammingError:
-                retorno = "Erro de T-SQL na inserção, validar:  " + stringinsert + " \n"
+                return "Erro de T-SQL na inserção, validar: {} \n".format(stringinsert)
 
         conn.commit()
     else:

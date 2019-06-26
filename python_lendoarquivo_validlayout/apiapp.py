@@ -22,7 +22,7 @@ def save_dev():
 @app.route('/situation', methods=['GET'])
 def obter_situa():
     situacao = str(r.get('situacao'))
-    situacao += "\n tempo total: "+str((time.time() - float(r.get('tempo_inicial')))/60) + " minutos"
+    situacao += "\n tempo total: {} minutos".format(str((time.time() - float(r.get('tempo_inicial')))/60))
     return situacao
 
 
